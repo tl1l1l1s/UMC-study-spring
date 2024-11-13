@@ -19,14 +19,16 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT 0")
+    @Column(nullable = false, length = 300)
+    private String body;
+
+    @Column(columnDefinition = "FLOAT DEFAULT '0'", nullable = false)
     private Float score;
 }

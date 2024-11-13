@@ -20,10 +20,10 @@ public class Mission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "INTEGER DEFAULT 500", nullable = false)
     private Integer reward;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "DATETIME DEFAULT (NOW()+INTERVAL 7 DAY)", nullable = false)
     private LocalDate deadline;
 
     @Column(nullable = false)
