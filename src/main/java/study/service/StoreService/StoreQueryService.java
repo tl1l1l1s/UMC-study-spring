@@ -1,4 +1,4 @@
-package study.service;
+package study.service.StoreService;
 
 import study.domain.Store;
 import java.util.List;

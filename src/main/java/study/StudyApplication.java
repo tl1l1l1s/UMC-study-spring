@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import study.service.StoreQueryService;
+import study.service.StoreService.StoreQueryService;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -19,6 +19,7 @@ public class StudyApplication {
     @Bean
     public CommandLineRunner run(ApplicationContext context) {
         return args -> {
+            // 실습
             StoreQueryService storeService = context.getBean(StoreQueryService.class);
 
             // 파라미터 값 설정
@@ -32,6 +33,10 @@ public class StudyApplication {
 
             storeService.findStoresByNameAndScore(name, score)
                     .forEach(System.out::println);
+
+
+            // 미션
+
         };
     }
 }

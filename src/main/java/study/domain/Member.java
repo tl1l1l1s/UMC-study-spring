@@ -50,7 +50,10 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String email;
 
+    @Column(columnDefinition = "INTEGER DEFAULT '0'")
     private String point;
+
+    private String phone;
 
     // N에 해당하는 entity에서 ManyToOne 멤버변수를 mappedBy
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL) // CascadeType.ALL == member의 변화에 따라 다른 테이블들에 영향 O
