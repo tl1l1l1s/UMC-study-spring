@@ -23,8 +23,8 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     }
 
     @Override
-    public Page<Mission> findByMemberIdAndStatus(Long memberId, MissionStatus status, Pageable pageable) {
-        Page<Mission> filteredMissions = missionRepository.dynamicQueryWithBooleanBuilder(memberId, status, pageable);
+    public Page<Mission> findByMemberIdAndStatus(Long memberId, MissionStatus status, Long lastMissionId, Pageable pageable) {
+        Page<Mission> filteredMissions = missionRepository.dynamicQueryWithBooleanBuilder(memberId, status, lastMissionId, pageable);
 
         filteredMissions.forEach(mission -> {
             System.out.println(status + " : " + mission);
@@ -34,8 +34,8 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     }
 
     @Override
-    public Page<Mission> findChallengingByRegion(Long memberId, Long regionId, Pageable pageable) {
-        Page<Mission> filteredMissions = missionRepository.findChallengingMissionByRegion(memberId, regionId, pageable);
+    public Page<Mission> findChallengingByRegion(Long memberId, Long regionId,  Long lastMissionId, Pageable pageable) {
+        Page<Mission> filteredMissions = missionRepository.findChallengingMissionByRegion(memberId, regionId, lastMissionId, pageable);
 
         filteredMissions.forEach(mission -> {
             System.out.println("현재 " + regionId + "의 region에서 실행 가능한 미션들 : " + mission);

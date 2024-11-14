@@ -5,7 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import study.domain.Member;
+import study.domain.Mission;
+import study.domain.enums.MissionStatus;
+import study.service.MemberService.MemberQueryService;
+import study.service.MissionService.MissionQueryService;
+import study.service.ReviewService.ReviewQueryService;
 import study.service.StoreService.StoreQueryService;
 
 @SpringBootApplication
@@ -36,7 +44,54 @@ public class StudyApplication {
 
 
             // 미션
+            MissionQueryService missionService = context.getBean(MissionQueryService.class);
+            ReviewQueryService reviewService = context.getBean(ReviewQueryService.class);
+            MemberQueryService memberService = context.getBean(MemberQueryService.class);
 
+            // 파라미터 값 설정
+            Long memberId = 2L;
+            MissionStatus challenging = MissionStatus.CHALLENGING;
+            MissionStatus completed = MissionStatus.COMPLETED;
+            Long storeId = 1L;
+            Long regionId = 1L;
+            String title = "리뷰 제목";
+            String body = "리뷰 내용 예시";
+            Long lastMissionId = 10L;
+            Pageable pageable = PageRequest.of(0, 10);
+
+            // 진행 중인 미션 모아보기
+            System.out.println("Executing findByMemberIdAndStatus with parameters:");
+            System.out.println("Member Id: " + memberId);
+            System.out.println("Status: " + challenging);
+
+            missionService.findByMemberIdAndStatus(memberId, challenging, lastMissionId, pageable)
+                    .forEach(System.out::println);
+
+//            // 진행 완료한 미션 모아보기
+//            System.out.println("Member Id: " + memberId);
+//            System.out.println("Status: " + completed);
+//
+//            missionService.findByMemberIdAndStatus(memberId, completed, lastMissionId, pageable)
+//                    .forEach(System.out::println);
+
+            // 리뷰 작성
+//            System.out.println("Executing insertReview with parameters:");
+//            reviewService.insertReview(memberId, storeId, title, body, score);
+
+            // 현재 선택한 region에서 도전 가능한 미션 모아보기
+            System.out.println("Executing insertReview with parameters:");
+            System.out.println("Member Id: " + memberId);
+            System.out.println("region Id" + regionId);
+
+            missionService.findChallengingByRegion(memberId, regionId, lastMissionId, pageable)
+                    .forEach(System.out::println);
+
+            // 마이 페이지에서 필요한 정보 모아보기
+//            System.out.println("Executing getMemberProfileById with parameters:");
+//            System.out.println("Member Id: " + memberId);
+//
+//            Member mem = memberService.getMemberProfileById(memberId);
+//            System.out.println(mem);
         };
     }
 }

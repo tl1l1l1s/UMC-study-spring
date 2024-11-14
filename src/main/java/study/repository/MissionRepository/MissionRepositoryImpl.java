@@ -1,6 +1,7 @@
 package study.repository.MissionRepository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,20 +29,26 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
 
     // 진행 중이거나 진행 완료인 미션 모아보기
     @Override
-    public Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Pageable pageable) {
+    public Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Long lastMissionId, Pageable pageable) {
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if(memberId != null) {
-            predicate.and(memberMission.id.eq(memberId));
+        if(memberId != null && status != null) {
+            predicate.and(mission.id.notIn(
+                    JPAExpressions
+                            .select(memberMission.mission.id)
+                            .from(memberMission)
+                            .where(memberMission.member.id.eq(memberId)
+                                    .and(memberMission.status.eq(status)))
+            ));
         }
 
-        if(status != null) {
-            predicate.and(memberMission.status.eq(status));
+        if(lastMissionId != null) {
+            predicate.and(mission.id.lt(lastMissionId));
         }
 
         List<Mission> missionList = jpaQueryFactory
             .selectFrom(mission)
-            .join(memberMission.mission)
+//            .join(memberMission.mission)
             .where(predicate)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -57,12 +64,17 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
 
     // 현재 선택한 region에서 도전 가능한 미션 모아보기
     @Override
-    public Page<Mission> findChallengingMissionByRegion(Long memberId, Long regionId, Pageable pageable) {
+    public Page<Mission> findChallengingMissionByRegion(Long memberId, Long regionId, Long lastMissionId, Pageable pageable) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if(memberId != null) {
-            predicate.and(memberMission.id.eq(memberId));
-            predicate.and(memberMission.status.eq(MissionStatus.CHALLENGING));
+            predicate.and(mission.id.notIn(
+                    JPAExpressions
+                            .select(memberMission.mission.id)
+                            .from(memberMission)
+                            .where(memberMission.member.id.eq(memberId)
+                            .and(memberMission.status.eq(MissionStatus.COMPLETED)))
+            ));
             predicate.and(mission.deadline.gt(LocalDate.now()));
         }
 
@@ -70,10 +82,14 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
             predicate.and(region.id.eq(regionId));
         }
 
+        if(lastMissionId != null) {
+            predicate.and(mission.id.lt(lastMissionId));
+        }
+
         List<Mission> missionList = jpaQueryFactory
                 .selectFrom(mission)
-                .join(mission.store, store)
-                .join(store.region, region)
+                .join(mission.store, store).fetchJoin()
+                .join(store.region, region).fetchJoin()
                 .where(predicate)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

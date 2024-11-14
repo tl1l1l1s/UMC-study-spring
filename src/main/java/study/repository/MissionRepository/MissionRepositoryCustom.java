@@ -6,7 +6,7 @@ import study.domain.Mission;
 import study.domain.enums.MissionStatus;
 
 public interface MissionRepositoryCustom {
-    Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Pageable pageable);
+    Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Long lastMissionId, Pageable pageable);
 
-    Page<Mission> findChallengingMissionByRegion(Long memberId, Long regionId, Pageable pageable);
+    Page<Mission> findChallengingMissionByRegion(Long memberId, Long regionId, Long lastMissionId, Pageable pageable);
 }
