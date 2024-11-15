@@ -67,16 +67,16 @@ public class StudyApplication {
             missionService.findByMemberIdAndStatus(memberId, challenging, lastMissionId, pageable)
                     .forEach(System.out::println);
 
-//            // 진행 완료한 미션 모아보기
-//            System.out.println("Member Id: " + memberId);
-//            System.out.println("Status: " + completed);
-//
-//            missionService.findByMemberIdAndStatus(memberId, completed, lastMissionId, pageable)
-//                    .forEach(System.out::println);
+            // 진행 완료한 미션 모아보기
+            System.out.println("Member Id: " + memberId);
+            System.out.println("Status: " + completed);
+
+            missionService.findByMemberIdAndStatus(memberId, completed, lastMissionId, pageable)
+                    .forEach(System.out::println);
 
             // 리뷰 작성
-//            System.out.println("Executing insertReview with parameters:");
-//            reviewService.insertReview(memberId, storeId, title, body, score);
+            System.out.println("Executing insertReview with parameters:");
+            reviewService.insertReview(memberId, storeId, title, body, score);
 
             // 현재 선택한 region에서 도전 가능한 미션 모아보기
             System.out.println("Executing insertReview with parameters:");
@@ -87,11 +87,11 @@ public class StudyApplication {
                     .forEach(System.out::println);
 
             // 마이 페이지에서 필요한 정보 모아보기
-//            System.out.println("Executing getMemberProfileById with parameters:");
-//            System.out.println("Member Id: " + memberId);
-//
-//            Member mem = memberService.getMemberProfileById(memberId);
-//            System.out.println(mem);
+            System.out.println("Executing getMemberProfileById with parameters:");
+            System.out.println("Member Id: " + memberId);
+
+            Member mem = memberService.getMemberProfileById(memberId);
+            System.out.println(mem);
         };
     }
 }
