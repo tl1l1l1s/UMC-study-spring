@@ -1,2 +1,2 @@
-## UMC 7th Study
+# UMC 7th Study
 ### Spring Boot
