@@ -21,7 +21,7 @@ import study.service.StoreService.StoreQueryService;
 public class StudyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StudyApplication.class, args);
+        SpringApplication.                                                                                            run(StudyApplication.class, args);
     }
 
     @Bean

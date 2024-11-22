@@ -2,6 +2,9 @@ package study.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import study.domain.common.BaseEntity;
 import study.domain.enums.Gender;
 import study.domain.enums.MemberStatus;
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Entity // 해당 class가 JPA의 entitiy
 @Getter // lombok 제공, getter 생성
+@DynamicInsert
+@DynamicUpdate
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor // 빌더 패턴 사용
@@ -47,10 +52,10 @@ public class Member extends BaseEntity {
 
     private LocalDate inactiveDate;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true, length = 50)
     private String email;
 
-    @Column(columnDefinition = "INTEGER DEFAULT '0'")
+    @ColumnDefault("0")
     private String point;
 
     private String phone;

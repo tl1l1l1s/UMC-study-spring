@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import study.domain.Member;
 import study.domain.Mission;
+import study.domain.Store;
 import study.domain.common.BaseEntity;
 import study.domain.enums.MissionStatus;
 
@@ -29,4 +30,12 @@ public class MemberMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setMission(Mission mission) {
+        this.mission = mission;
+    }
 }
