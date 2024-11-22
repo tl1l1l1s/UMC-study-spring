@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import study.apiPayload.ApiResponse;
 import study.converter.ReviewConverter;
 import study.domain.Review;
+import study.service.ReviewService.ReviewCommandService;
 import study.service.ReviewService.ReviewQueryService;
 import study.web.dto.Review.ReviewRequestDTO;
 import study.web.dto.Review.ReviewResponseDTO;
@@ -17,11 +18,11 @@ import study.web.dto.Review.ReviewResponseDTO;
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
 public class ReviewRestController {
-    private final ReviewQueryService reviewQueryService;
+    private final ReviewCommandService reviewCommandService;
 
     @PostMapping("/")
     public ApiResponse<ReviewResponseDTO.AddReviewResultDTO> addReview(@RequestBody @Valid ReviewRequestDTO.AddReviewDTO request) {
-        Review review = reviewQueryService.insertReview(request);
+        Review review = reviewCommandService.addReview(request);
 
         return ApiResponse.onSuccess(ReviewConverter.toAddReviewResultDTO(review));
     }
