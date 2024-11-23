@@ -31,4 +31,12 @@ public class Review extends BaseEntity {
 
     @Column(columnDefinition = "FLOAT DEFAULT '0'", nullable = false)
     private Float score;
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

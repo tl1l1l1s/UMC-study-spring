@@ -27,6 +27,21 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
     private final QStore store = QStore.store;
     private final QRegion region = QRegion.region;
 
+    // store Id로 미션 찾기
+    @Override
+    public Mission findByStoreId(Long storeId) {
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(storeId != null){
+            predicate.and(mission.store.id.eq(storeId));
+        }
+
+        return jpaQueryFactory
+                .selectFrom(mission)
+                .where(predicate)
+                .fetchOne();
+    }
+
     // 진행 중이거나 진행 완료인 미션 모아보기
     @Override
     public Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Long lastMissionId, Pageable pageable) {
