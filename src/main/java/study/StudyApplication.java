@@ -49,7 +49,7 @@ public class StudyApplication {
             MemberQueryService memberService = context.getBean(MemberQueryService.class);
 
             // 파라미터 값 설정
-            Long memberId = 2L;
+            Long memberId = 1L;
             MissionStatus challenging = MissionStatus.CHALLENGING;
             MissionStatus completed = MissionStatus.COMPLETED;
             Long storeId = 1L;
@@ -66,6 +66,8 @@ public class StudyApplication {
 
             missionService.findByMemberIdAndStatus(memberId, challenging, lastMissionId, pageable)
                     .forEach(System.out::println);
+
+            System.out.println("aaa : " + missionService.findByMemberIdAndStatus(memberId, challenging, lastMissionId, pageable).getSize());
 
             // 진행 완료한 미션 모아보기
             System.out.println("Member Id: " + memberId);

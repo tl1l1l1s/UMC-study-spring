@@ -47,34 +47,50 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
     public Page<Mission> dynamicQueryWithBooleanBuilder(Long memberId, MissionStatus status, Long lastMissionId, Pageable pageable) {
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if(memberId != null && status != null) {
-            predicate.and(mission.id.notIn(
+//        if (memberId != null && status != null) {
+//            predicate.and(mission.id.in(
+//                    JPAExpressions
+//                            .select(memberMission.mission.id)
+//                            .from(memberMission)
+//                            .where(memberMission.member.id.eq(memberId)
+//                                    .and(memberMission.status.eq(status)))
+//            ));
+//        }
+//
+//        if(lastMissionId != null) {
+//            predicate.and(mission.id.lt(lastMissionId));
+//        }
+
+        if (memberId != null && status != null) {
+            predicate.and(mission.id.in(
                     JPAExpressions
                             .select(memberMission.mission.id)
                             .from(memberMission)
-                            .where(memberMission.member.id.eq(memberId)
-                                    .and(memberMission.status.eq(status)))
+                            .where(memberMission.member.id.eq(memberId),
+                                    memberMission.status.eq(status))
             ));
         }
 
-        if(lastMissionId != null) {
+        if (lastMissionId != null && lastMissionId>0) {
             predicate.and(mission.id.lt(lastMissionId));
         }
 
-        List<Mission> missionList = jpaQueryFactory
-            .selectFrom(mission)
-//            .join(memberMission.mission)
-            .where(predicate)
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch();
 
-        int total = jpaQueryFactory
+        Long total = jpaQueryFactory
+                .select(mission.count())
+                .from(mission)
+                .where(predicate)
+                .fetchOne();
+
+        List<Mission> missionList = jpaQueryFactory
                 .selectFrom(mission)
                 .where(predicate)
-                .fetch().size();
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
 
-        return new PageImpl<>(missionList, pageable, total);
+
+        return new PageImpl<>(missionList, pageable,  total != null ? total : 0L);
     }
 
     // 현재 선택한 region에서 도전 가능한 미션 모아보기
