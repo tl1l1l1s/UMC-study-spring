@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import study.domain.common.BaseEntity;
 import study.domain.enums.Gender;
 import study.domain.enums.MemberStatus;
+import study.domain.enums.Role;
 import study.domain.enums.SocialType;
 import study.domain.mapping.MemberAgree;
 import study.domain.mapping.MemberMission;
@@ -52,13 +53,19 @@ public class Member extends BaseEntity {
 
     private LocalDate inactiveDate;
 
-    @Column(nullable = true, length = 50)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @ColumnDefault("0")
     private String point;
 
     private String phone;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // N에 해당하는 entity에서 ManyToOne 멤버변수를 mappedBy
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL) // CascadeType.ALL == member의 변화에 따라 다른 테이블들에 영향 O
@@ -72,4 +79,8 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberMission> memberMissionList = new ArrayList<>();
+
+    public void encodePassword(String password) {
+        this.password = password;
+    }
 }
