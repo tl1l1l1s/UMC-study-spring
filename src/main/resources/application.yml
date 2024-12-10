@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/study
-    username: umc
-    password: umc1234
+    url: jdbc:mysql://localhost:3306/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
@@ -23,16 +23,16 @@ spring:
         registration:
           kakao:
             client-authentication-method: client_secret_post
-            client-id: 6d4981840f7b800a85fb6a9c7b4a26b4
-            client-secret: d60WEZkRr81mVQwssIdp1dsa70FGMVB9
+            client-id: ${KAKAO_CLIENTID}
+            client-secret: ${KAKAO_CLIENTPASSWORD}
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             scope: profile_nickname
             client-name: Kakao
           naver:
             client-authentication-method: client_secret_post
-            client-id: 5P0QBeZwq8LIYNIj4NuV
-            client-secret: fhvzvYSX9g
+            client-id: ${NAVER_CLIENTID}
+            client-secret: ${NAVER_CLIENTPASSWORD}
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name, email
