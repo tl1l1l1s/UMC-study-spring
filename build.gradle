@@ -1,18 +1,12 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.4'
-	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'umc'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '17'
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
 
 configurations {
 	compileOnly {
@@ -80,15 +74,16 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// QueryDSL
-def generated = 'src/main/generated'
+def querydslDir = "src/main/generated"
 
-tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
 }
 
-sourceSets.main.java.srcDirs += generated
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
 
-clean {
-	delete file(generated)
+clean.doLast {
+	file(querydslDir).deleteDir()
 }
