@@ -83,4 +83,4 @@ jobs:
             fi
           " || exit 1
           
-          rm -f private_key.pem
+          rm -f DeployKeyPair.pem
