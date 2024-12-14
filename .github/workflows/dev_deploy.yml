@@ -3,9 +3,6 @@ name : UMC study CI/CD
 on :
   push :
     branches : [ develop ] # develop branch에 push 발생 시
-  pull_request :
-    types : [closed]
-  workflow_dispatch : # (2) . 수동 실행도 가능하도록
 
 jobs :
   build :
