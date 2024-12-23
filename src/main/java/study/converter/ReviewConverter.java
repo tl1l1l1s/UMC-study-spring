@@ -2,6 +2,7 @@ package study.converter;
 
 import org.springframework.data.domain.Page;
 import study.domain.Review;
+import study.domain.ReviewImage;
 import study.web.dto.Review.ReviewRequestDTO;
 import study.web.dto.Review.ReviewResponseDTO;
 
@@ -24,6 +25,14 @@ public class ReviewConverter {
                 .title(request.getTitle())
                 .body(request.getBody())
                 .score(request.getScore())
+                .build();
+    }
+
+    public static ReviewImage toReviewImage(String pictureUrl, Review review) {
+
+        return ReviewImage.builder()
+                .imageUrl(pictureUrl)
+                .review(review)
                 .build();
     }
 

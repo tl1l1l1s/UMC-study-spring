@@ -3,6 +3,7 @@ package study;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +17,12 @@ import study.service.MissionService.MissionQueryService;
 import study.service.ReviewService.ReviewQueryService;
 import study.service.StoreService.StoreQueryService;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableJpaAuditing
 public class StudyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.                                                                                            run(StudyApplication.class, args);
+        SpringApplication.run(StudyApplication.class, args);
     }
 
     @Bean
